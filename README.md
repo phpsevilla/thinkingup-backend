@@ -1,2 +1,3 @@
-# phpsevilla016-demo-backend
-Demo project
+# ThinkingUP Backend
+
+Demo Project
