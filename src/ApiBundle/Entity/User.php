@@ -1,7 +1,17 @@
 <?php
 
+/*
+ * This file is part of the Thinkingup project.
+ *
+ * (c) Miguel Ángel Martín <miguelbemartin@gmail.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+
 namespace ApiBundle\Entity;
 
+use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -10,7 +20,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\UserRepository")
  */
-class User
+class User extends BaseUser
 {
     /**
      * @var int
@@ -19,7 +29,7 @@ class User
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      */
-    private $id;
+    protected $id;
 
     /**
      * @var string
@@ -28,6 +38,10 @@ class User
      */
     private $name;
 
+    public function __construct()
+    {
+        parent::__construct();
+    }
 
     /**
      * Get id
@@ -63,4 +77,3 @@ class User
         return $this->name;
     }
 }
-

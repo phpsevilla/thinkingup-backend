@@ -1,0 +1,12 @@
+parameters:
+    user.manager.class: ApiBundle\Manager\UserManager
+    idea.manager.class: ApiBundle\Manager\IdeaManager
+
+services:
+    user.manager:
+        class: "%user.manager.class%"
+        arguments: ["@user.repository" ]
+
+    idea.manager:
+        class: "%idea.manager.class%"
+        arguments: ["@idea.repository" ]

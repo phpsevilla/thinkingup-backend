@@ -1,0 +1,16 @@
+parameters:
+    user.repository.class: ApiBundle\Repository\UserRepository
+    idea.repository.class: ApiBundle\Repository\IdeaRepository
+
+services:
+    user.repository:
+        class: "%user.repository.class%"
+        public: true
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: [ ApiBundle\Entity\User ]
+
+    idea.repository:
+        class: "%idea.repository.class%"
+        public: true
+        factory: ["@doctrine.orm.entity_manager", getRepository]
+        arguments: [ ApiBundle\Entity\Idea ]
