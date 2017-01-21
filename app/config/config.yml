@@ -3,6 +3,7 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
     - { resource: "@ApiBundle/Resources/config/services.yml" }
+    - { resource: "@OauthBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # http://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -69,12 +70,18 @@ swiftmailer:
     password:  "%mailer_password%"
     spool:     { type: memory }
 
-# app/config/config.yml
+# Fos User Configuration
 fos_user:
     db_driver: orm # other valid values are 'mongodb', 'couchdb' and 'propel'
     firewall_name: main
     user_class: ApiBundle\Entity\User
+    registration:
+        confirmation:
+            enabled:    false
+        form:
+            type: ApiBundle\Form\RegistrationType
 
+# Fos Oauth Server Configuration
 fos_oauth_server:
     db_driver: orm       # Drivers available: orm, mongodb, or propel
     client_class:        OauthBundle\Entity\Client
@@ -83,3 +90,41 @@ fos_oauth_server:
     auth_code_class:     OauthBundle\Entity\AuthCode
     service:
         user_provider: fos_user.user_provider.username
+
+# Fos Rest Configuration
+fos_rest:
+    view:
+#        default_engine: php
+        view_response_listener: force
+        force_redirects:
+          html: true
+#          xml: true
+        formats:
+            jsonp: true
+            json: true
+            xml: true
+            rss: false
+        templating_formats:
+            html: true
+        mime_types:
+            json: ['application/json', 'application/x-json']
+            rss:  ['application/rss+xml']
+            jpg:  ['image/jpeg']
+            png:  ['image/png']
+        jsonp_handler: ~
+    body_listener: true
+    param_fetcher_listener: true
+    allowed_methods_listener: true
+    access_denied_listener:
+        json: true
+    format_listener:
+        rules:
+            - { path: ^/, priorities: [ json ], fallback_format: json, prefer_extension: true }
+    routing_loader:
+        default_format: ~
+    exception:
+        codes:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': 404
+            'Doctrine\ORM\OptimisticLockException': HTTP_CONFLICT
+        messages:
+            'Symfony\Component\Routing\Exception\ResourceNotFoundException': true
