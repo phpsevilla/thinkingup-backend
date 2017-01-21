@@ -1,9 +1,9 @@
 parameters:
-    database_host:     '%env.database_host%'
+    database_host:     '%env.rds_hostname%'
     database_port:     ~
-    database_name:     '%env.database_name%'
-    database_user:     '%env.database_user%'
-    database_password: '%env.database_password%'
+    database_name:     '%env.rds_db_name%'
+    database_user:     '%env.rds_username%'
+    database_password: '%env.rds_password%'
 
     mailer_transport:  smtp
     mailer_host:       127.0.0.1
@@ -11,4 +11,4 @@ parameters:
     mailer_password:   ~
 
     # A secret key that's used to generate certain security-related tokens
-    secret:            '%env.secret%'
+    secret:            1234
