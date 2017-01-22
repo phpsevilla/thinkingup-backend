@@ -20,10 +20,10 @@ use FOS\UserBundle\FOSUserEvents;
 use FOS\UserBundle\Event\FormEvent;
 use FOS\UserBundle\Event\GetResponseUserEvent;
 use FOS\UserBundle\Event\FilterUserResponseEvent;
-use Nelmio\ApiDocBundle\Annotation\ApiDoc;
 use FOS\RestBundle\Controller\FOSRestController;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use FOS\RestBundle\Controller\Annotations as Rest;
+use Symfony\Component\HttpFoundation\Response;
 
 class RegisterController extends FOSRestController
 {
@@ -67,16 +67,24 @@ class RegisterController extends FOSRestController
 
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
-            return  [
-                'data' => [
-                    'id'    => $user->getId(),
-                    'name'  => $user->getName(),
-                    'email' => $user->getEmail(),
-                    'roles' => $user->getRoles()
-                  ]
+            $basic_user = [
+                'id'    => $user->getId(),
+                'name'  => $user->getName(),
+                'email' => $user->getEmail(),
+                'roles' => $user->getRoles()
             ];
+
+            $view = $this->view($basic_user, Response::HTTP_OK);
+
+            return $this->handleView($view);
+
         }else{
-            return  ['data' => $form];
+
+            $view = $this->view($form, Response::HTTP_BAD_REQUEST);
+
+            return $this->handleView($view);
+
+            //return  ['data' => $form];
         }
     }
 
