@@ -12,7 +12,7 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Entity\User;
-use ApiBundle\Form\UserType;
+use ApiBundle\Form\RegistrationType;
 use FOS\UserBundle\Form\Type\RegistrationFormType;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,47 +47,30 @@ class RegisterController extends FOSRestController
             return $event->getResponse();
         }
 
-        $form = $formFactory->createForm();
-        $form->setData($user);
+        $form = $this->createForm('ApiBundle\Form\RegistrationType', $user);
 
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
-            //$user->setRegistrationDate(new \DateTime("now", new \DateTimeZone("UCT")));
 
             $event = new FormEvent($form, $request);
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
 
             $user->setEnabled(true);
 
+            $user->setUsername($user->getEmail());
+
             if (null === $response = $event->getResponse()) {
-                $url = $this->generateUrl('api_user_confirmed');
+                $url = $this->generateUrl('fos_user_registration_confirmed');
                 $response = new RedirectResponse($url);
             }
 
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
-            return  ['data'=>$user];
+            return  ['data' => $user];
         }else{
-            return  ['data'=>$form];
+            return  ['data' => $form];
         }
     }
 
-
-    /**
-     * @Rest\Get("/users/confirmed", name="api_user_confirmed")
-     *
-     * Tell the user his account is now confirmed
-     */
-    public function confirmedAction()
-    {
-        $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
-            throw new AccessDeniedHttpException('This user does not have access to this section.');
-        }
-
-        return $this->render('FOSUserBundle:Registration:confirmed.html.twig', array(
-            'user' => $user,
-        ));
-    }
 }

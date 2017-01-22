@@ -13,16 +13,20 @@ class IdeaType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('title')->add('description')->add('user')        ;
+        $builder
+          ->add('title')
+          ->add('description')
+        ;
     }
-    
+
     /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'ApiBundle\Entity\Idea'
+            'data_class' => 'ApiBundle\Entity\Idea',
+            'csrf_protection' => false
         ));
     }
 

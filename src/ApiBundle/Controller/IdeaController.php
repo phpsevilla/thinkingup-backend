@@ -12,15 +12,13 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Entity\Idea;
+use ApiBundle\Form\IdeaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
-use FOS\RestBundle\Controller\Annotations\Delete;
-use FOS\RestBundle\Controller\Annotations\Patch;
-use FOS\RestBundle\Controller\Annotations\Get;
-use FOS\RestBundle\Controller\Annotations\Put;
+use FOS\RestBundle\Controller\Annotations as Rest;
 use FOS\RestBundle\Util\Codes;
 
 /**
@@ -31,7 +29,7 @@ use FOS\RestBundle\Util\Codes;
 class IdeaController extends BaseController
 {
     /**
-     * @Get("/idea")
+     * @Rest\Get("/ideas")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -47,7 +45,7 @@ class IdeaController extends BaseController
     }
 
     /**
-     * @Get("/idea/{id}")
+     * @Rest\Get("/ideas/{id}")
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
@@ -60,5 +58,38 @@ class IdeaController extends BaseController
         $view = $this->view($idea, Response::HTTP_OK);
 
         return $this->handleView($view);
+    }
+
+    /**
+     * @Rest\Post("/ideas")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function postIdea(Request $request)
+    {
+        $idea = new Idea();
+        $form = $this->createForm('ApiBundle\Form\IdeaType', $idea);
+
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $this->getUser();
+
+            $idea->setUser($user);
+
+            $em->persist($idea);
+
+            $em->flush();
+
+            $view = $this->view($idea, Response::HTTP_OK);
+
+            return $this->handleView($view);
+
+      }else{
+          return  ['data' => $form];
+      }
     }
 }

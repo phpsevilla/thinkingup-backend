@@ -12,6 +12,7 @@
 namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Idea
@@ -33,12 +34,28 @@ class Idea
     /**
      * @var string
      *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "The title must have at least {{ limit }} characters",
+     *      maxMessage = "The title should not exceed {{ limit }} characters  "
+     * )
+     *
      * @ORM\Column(name="title", type="string", length=255)
      */
     private $title;
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "The description must have at least {{ limit }} characters",
+     *      maxMessage = "The description should not exceed {{ limit }} characters  "
+     * )
      *
      * @ORM\Column(name="description", type="string", length=255)
      */
@@ -130,6 +147,6 @@ class Idea
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->user->getId();
     }
 }

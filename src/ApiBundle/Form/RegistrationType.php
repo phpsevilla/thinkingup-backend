@@ -15,13 +15,7 @@ class RegistrationType extends AbstractType
         $builder
             ->add('email', null, [])
             ->add('name', null, [])
-            ->add('username', null, [])
-            ->add('plainPassword', RepeatedType::class, array(
-                'type' => PasswordType::class,
-                'invalid_message' => 'fos_user.password.mismatch',
-                'first_options'  => array('label' => 'Password'),
-                'second_options' => array('label' => 'Repeat Password'),
-            ))
+            ->add('plainPassword', null, [])
         ;
     }
 
@@ -32,11 +26,6 @@ class RegistrationType extends AbstractType
             'intention'       => 'registration',
             'csrf_protection' => false
         ));
-    }
-
-    public function getParent()
-    {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
     }
 
     public function getBlockPrefix()
