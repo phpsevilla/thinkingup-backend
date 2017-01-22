@@ -147,6 +147,9 @@ class Idea
      */
     public function getUser()
     {
-        return $this->user->getId();
+        return [
+            "id"   => $this->user->getId(),
+            "name" => $this->user->getName()
+        ];
     }
 }
