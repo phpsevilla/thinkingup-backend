@@ -67,7 +67,14 @@ class RegisterController extends FOSRestController
 
             $dispatcher->dispatch(FOSUserEvents::REGISTRATION_COMPLETED, new FilterUserResponseEvent($user, $request, $response));
 
-            return  ['data' => $user];
+            return  [
+                'data' => [
+                    'id'    => $user->getId(),
+                    'name'  => $user->getName(),
+                    'email' => $user->getEmail(),
+                    'roles' => $user->getRoles()
+                  ]
+            ];
         }else{
             return  ['data' => $form];
         }

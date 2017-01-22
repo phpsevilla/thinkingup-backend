@@ -13,11 +13,14 @@ namespace ApiBundle\Entity;
 
 use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
+ * @UniqueEntity("email")
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\UserRepository")
  */
 class User extends BaseUser
@@ -33,6 +36,14 @@ class User extends BaseUser
 
     /**
      * @var string
+     *
+     * @Assert\NotBlank()
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 255,
+     *      minMessage = "The name must have at least {{ limit }} characters",
+     *      maxMessage = "The name should not exceed {{ limit }} characters  "
+     * )
      *
      * @ORM\Column(name="name", type="string", length=255)
      */

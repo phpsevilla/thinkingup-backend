@@ -19,6 +19,11 @@ class RegistrationType extends AbstractType
         ;
     }
 
+    public function getParent()
+    {
+        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+    }
+
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
