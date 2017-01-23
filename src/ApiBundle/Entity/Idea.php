@@ -13,15 +13,19 @@ namespace ApiBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiBundle\Entity\Traits\Timestampable;
 
 /**
  * Idea
  *
  * @ORM\Table(name="idea")
  * @ORM\Entity(repositoryClass="ApiBundle\Repository\IdeaRepository")
+ * @ORM\HasLifecycleCallbacks()
  */
 class Idea
 {
+    use Timestampable;
+
     /**
      * @var int
      *
