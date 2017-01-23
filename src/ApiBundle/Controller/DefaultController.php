@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use FOS\RestBundle\Controller\FOSRestController;
 use FOS\RestBundle\Controller\Annotations\Get;
 
-class DefaultController extends BaseController
+class DefaultController extends FOSRestController
 {
     /**
      * @Get("/")

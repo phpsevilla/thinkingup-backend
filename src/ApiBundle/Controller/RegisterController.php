@@ -83,8 +83,6 @@ class RegisterController extends FOSRestController
             $view = $this->view($form, Response::HTTP_BAD_REQUEST);
 
             return $this->handleView($view);
-
-            //return  ['data' => $form];
         }
     }
 

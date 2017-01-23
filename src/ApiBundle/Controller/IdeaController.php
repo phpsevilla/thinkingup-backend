@@ -12,7 +12,6 @@
 namespace ApiBundle\Controller;
 
 use ApiBundle\Entity\Idea;
-use ApiBundle\Form\IdeaType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +25,7 @@ use FOS\RestBundle\Util\Codes;
  *
  * @package ApiBundle\Controller
  */
-class IdeaController extends BaseController
+class IdeaController extends FOSRestController
 {
     /**
      * @Rest\Get("/ideas")
@@ -88,8 +87,50 @@ class IdeaController extends BaseController
 
             return $this->handleView($view);
 
-      }else{
-          return  ['data' => $form];
-      }
+        }else{
+
+            $view = $this->view($form, Response::HTTP_BAD_REQUEST);
+
+            return $this->handleView($view);
+        }
+    }
+
+    /**
+     * @Rest\Put("/ideas/{id}")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function putIdea(Request $request , Idea $idea)
+    {
+        $form = $this->createForm('ApiBundle\Form\IdeaType', $idea);
+
+        if ($idea->getUser() != $this->getUser()){
+
+            $view = $this->view($form, Response::HTTP_FORBIDDEN);
+
+            return $this->handleView($view);
+
+        }
+
+        $form->submit($request->request->all());
+
+        if ($form->isValid()) {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $em->persist($idea);
+
+            $em->flush();
+
+            $view = $this->view($idea, Response::HTTP_OK);
+
+            return $this->handleView($view);
+
+        }else{
+
+            $view = $this->view($form, Response::HTTP_BAD_REQUEST);
+
+            return $this->handleView($view);
+        }
     }
 }
