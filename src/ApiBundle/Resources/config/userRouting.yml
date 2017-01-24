@@ -1,9 +1,0 @@
-#fos_user_registration_register:
-#    path:     /register
-#    defaults: { _controller: ApiBundle:User:register }
-#    methods: [POST]
-
-#fos_user_registration_confirmed:
-#    path:     /users/confirmed
-#    defaults: { _controller: ApiBundle:User:confirmed }
-#    methods: [GET]

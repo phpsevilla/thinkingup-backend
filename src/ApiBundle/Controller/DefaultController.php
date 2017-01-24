@@ -24,6 +24,7 @@ class DefaultController extends FOSRestController
     public function indexAction()
     {
         $view = $this->view(['version' => '1.0', 'status' => 'Working'], Response::HTTP_OK);
+
         return $this->handleView($view);
     }
 
@@ -33,6 +34,7 @@ class DefaultController extends FOSRestController
     public function versionAction()
     {
         $view = $this->view(['version' => '1.0'], Response::HTTP_OK);
+
         return $this->handleView($view);
     }
 }
