@@ -69,7 +69,7 @@ trait Timestampable
     }
 
     /**
-     * @ORM\preUpdate
+     * @ORM\PreUpdate
      */
     public function doOnPreUpdate()
     {
