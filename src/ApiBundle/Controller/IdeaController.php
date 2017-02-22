@@ -105,14 +105,6 @@ class IdeaController extends FOSRestController
     {
         $form = $this->createForm('ApiBundle\Form\IdeaType', $idea);
 
-        if ($idea->getUser() != $this->getUser()){
-
-            $view = $this->view($form, Response::HTTP_FORBIDDEN);
-
-            return $this->handleView($view);
-
-        }
-
         $form->submit($request->request->all());
 
         if ($form->isValid()) {
